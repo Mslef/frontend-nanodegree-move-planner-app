@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your Moving Companion</title>
+    <link href='http://fonts.googleapis.com/css?family=Exo' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/libs/knockout-3.3.0.js"></script>
+</head>
+<body>
+
+    <header>
+        <form class="form-container">
+            <label for="street">Street: </label><input type="text" data-bind="value: street">
+            <label for="city">City: </label><input type="text" data-bind="value: city">
+            <button data-bind='click: loadData'>Submit</button>
+        </form>
+
+        <h1 class="greeting" data-bind="text: greeting">{greeting()}</h1>
+    </header>
+
+    <div class="container">
+        <section class="nytimes-container">
+            <h3 data-bind="text: nytHeader">{nytHeader}</h3>
+            <ul id="nytimes-articles" class="article-list">What's going on in your new city? Enter an address and hit submit and the NY Times will tell you here!</ul>
+            <!--<ul class="article-list" data-bind="text: nytArticles">{nytArticle}</ul>-->
+        </section>
+
+        <section class="wikipedia-container">
+            <h3 data-bind="text: wikiHeader">{wikiHeader}</h3>
+            <ul id="wikipedia-links">Type in an address above and find relevant Wikipedia articles here!</ul>
+        </section>
+    </div> 
+
+    <script src="js/libs/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
