@@ -2,19 +2,18 @@
 var viewModel = {
     street: ko.observable(""),
     city: ko.observable(""),
+    mapsURL: ko.observable("https://maps.googleapis.com/maps/api/streetview?size=600x400&location=40.689556,-74.043539"),
     greeting: ko.observable("Where would you want to live?"),
     nytHeader: ko.observable("New York Times Articles"),
     wikiHeader: ko.observable("Relevant Wikipedia Links"),
-    nytArticles: ko.observable("What's going on in your new city? Enter an address and hit submit and the NY Times will tell you here!")
+    nytArticles: ko.observable("What's going on in your new city? Enter an address and hit submit and the NY Times will tell you here!"),
+    nytArticleList: ko.observableArray(),
+    wikiArticleList: ko.observableArray(),
+    showDefault: ko.observable(true)
 };
 
 viewModel.address = ko.computed(function() {
     return viewModel.street() + ', ' + viewModel.city();
-}, viewModel);
-
-// Google Street View URL
-viewModel.mapsURL = ko.computed(function() {
-    return 'https://maps.googleapis.com/maps/api/streetview?size=600x400&location=' + viewModel.address();
 }, viewModel);
 
 // NYT URL
@@ -38,17 +37,22 @@ viewModel.loadData = function() {
     // Update Wiki header
     viewModel.wikiHeader('Wikipedia articles about ' + viewModel.address());
 
-    // load streetview
-    $('body').css('background-image', 'url(\"'+viewModel.mapsURL() +'\")');
-    $('body').css('background-size', 'cover');
+    //Update the background image
+    viewModel.mapsURL('https://maps.googleapis.com/maps/api/streetview?size=600x400&location=' + viewModel.address());
+
+    // Hide the default text
+    viewModel.showDefault(false);
 
     // Get NYT links
     $.getJSON(viewModel.nytURL(), function(data) {
         //Loop through all articles
         var docLength = data.response.docs.length;
         for (var i = 0; i < docLength; i++) {
-            var article = data.response.docs[i];
-            $nytElem.append('<li class="article"><a href=' + article.web_url + '>'+ article.headline.main + '<p>' + article.snippet + '</p></li>');
+            var dataEntry = {};
+            dataEntry.URL = data.response.docs[i].web_url;
+            dataEntry.mainHeadline = data.response.docs[i].headline.main;
+            dataEntry.snippet = data.response.docs[i].snippet;
+            viewModel.nytArticleList.push(dataEntry);
         } 
     }
     //get Wikipedia articles
@@ -57,3 +61,5 @@ viewModel.loadData = function() {
 };
 
 ko.applyBindings(viewModel);
+
+

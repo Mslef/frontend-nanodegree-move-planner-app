@@ -1,9 +1,12 @@
+html {height: 100%;}
 
 body {
     font-family: 'Exo', sans-serif;
     background-color: #CCC; 
     margin: 0;
+    height: 100%;
 }
+
 
 header {
     width: 100%;
@@ -11,6 +14,22 @@ header {
     background-color: rgba(255,255,255, 0.9);
     margin: 0 auto;
     text-align: center;
+}
+
+.bgimg {
+    position:fixed;
+    top: 0;
+    left: 0;
+    width:100%;
+    z-index:-1;
+    opacity:1;
+}
+
+.map {
+    height: 400px;
+    width: 400px;
+    display: flex;
+    margin: 10px auto;
 }
 
 .container {
@@ -54,5 +73,11 @@ header {
     }
     .wikipedia-container,.nytimes-container {
         width: 100%;
+        padding: 1em 0;
+    }
+
+    .bgimg {
+        height: 100vh;
+        width: auto;
     }
 }
