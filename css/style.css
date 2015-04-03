@@ -7,7 +7,6 @@ body {
     height: 100%;
 }
 
-
 header {
     width: 100%;
     padding: 1em 0;
@@ -28,11 +27,17 @@ header {
 .map {
     height: 400px;
     width: 400px;
-    display: flex;
     margin: 10px auto;
 }
 
-.container {
+.saved-locations {
+    width: 20%;
+    height: 100%;
+    margin: 10px auto;
+    background-color: rgba(255,255,255,0.7);
+}
+
+.container, .map-container {
     display: flex;
     display: -webkit-flex;
     width: 100%;
@@ -53,12 +58,12 @@ header {
     width: 60%;
 }
 
-.article-list {
+.article-list, .address-list {
     margin: 0;
     padding: 0;
 }
 
-.article {
+.article, .address-list-item {
     list-style-type: none;
     padding:10px;
     border-top: 1px solid #CCC;
@@ -68,10 +73,10 @@ header {
 }
 
 @media (max-width: 700px) {
-    .container {
+    .container, .map-container {
         display: block;
     }
-    .wikipedia-container,.nytimes-container {
+    .wikipedia-container,.nytimes-container, .saved-locations {
         width: 100%;
         padding: 1em 0;
     }

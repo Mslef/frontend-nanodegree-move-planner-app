@@ -1,7 +1,24 @@
+// Class for Address entries
+var AddressEntry = function() {
+    this.street = viewModel.street();
+    this.city = viewModel.city();
+    this.address = viewModel.address();
+    this.remove = function() {
+        viewModel.addressList.remove(this);
+    };
+    this.update = function() {
+        viewModel.street(this.street);
+        viewModel.city(this.city);
+        viewModel.loadData();
+    };
+        
+};
+
 
 var viewModel = {
     street: ko.observable(""),
     city: ko.observable(""),
+    address: ko.observable(""),
     mapsURL: ko.observable("https://maps.googleapis.com/maps/api/streetview?size=600x400&location=40.689556,-74.043539"),
     greeting: ko.observable("Where would you want to live?"),
     nytHeader: ko.observable("New York Times Articles"),
@@ -9,18 +26,41 @@ var viewModel = {
     nytArticles: ko.observable("What's going on in your new city? Enter an address and hit submit and the NY Times will tell you here!"),
     nytArticleList: ko.observableArray(),
     wikiArticleList: ko.observableArray(),
-    showDefault: ko.observable(true)
+    showDefault: ko.observable(true),
+    addressList: ko.observableArray(),
+    showAddButton: ko.observable(false),
+    showWarning: ko.observable(false)
 };
 
-viewModel.address = ko.computed(function() {
-    return viewModel.street() + ', ' + viewModel.city();
-}, viewModel);
 
 // NYT URL
 viewModel.nytURL = ko.computed(function() {
     return 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + viewModel.address()+'&=sort=newest&api-key=773fe7f4f46bee0b96f79fa100da469a:11:71760315';
 }, viewModel);
         
+
+viewModel.addToAddressList = function() {
+    var entry = new AddressEntry();
+    //TODO: Add pin on map method
+
+    // Check if entry already in
+    addressLength = viewModel.addressList().length;
+    for (var i = 0; i < addressLength; i++)  {
+        savedAddress = viewModel.addressList()[i].address;
+        console.log(savedAddress === viewModel.address());
+        if (savedAddress === viewModel.address()){
+            viewModel.showWarning(true);
+            console.log(savedAddress === viewModel.address());
+            return;
+        }
+    }
+    console.log(entry);
+    //Add the current address to addressList
+    viewModel.showWarning(false);
+    viewModel.addressList.push(entry);
+
+};
+
 // Update the view
 viewModel.loadData = function() {
     var $wikiElem = $('#wikipedia-links');
@@ -29,6 +69,8 @@ viewModel.loadData = function() {
     // clear out old data before new request
     $wikiElem.text("");
     $nytElem.text("");
+
+    viewModel.address(viewModel.street() + ', ' + viewModel.city());
 
     //Update the greeting
     viewModel.greeting('So, you want to live at ' + viewModel.address() + '?');
@@ -43,6 +85,9 @@ viewModel.loadData = function() {
     // Hide the default text
     viewModel.showDefault(false);
 
+    // Show the button to add addresses
+    viewModel.showAddButton(true);
+
     // Get NYT links
     $.getJSON(viewModel.nytURL(), function(data) {
         //Loop through all articles
@@ -55,11 +100,26 @@ viewModel.loadData = function() {
             viewModel.nytArticleList.push(dataEntry);
         } 
     }
-    //get Wikipedia articles
+
+    // TODO: Get Wikipedia articles
+
 
     );
 };
 
+// TODO: Search bar functionality
+
+// TODO: Sort order
+
+
+viewModel.loadListData = function() {
+
+    viewModel.loadData();
+};
+
 ko.applyBindings(viewModel);
+
+// TODO: Grunt minification
+
 
 

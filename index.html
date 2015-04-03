@@ -33,7 +33,7 @@
   </head>
   <body>
    <header>
-        <h1 class="greeting" data-bind="text: greeting">{greeting()}</h1>
+        <h1 class="greeting" data-bind="text: greeting"></h1>
 
         <form class="form-container">
             <label for="street">Street: </label><input type="text" data-bind="value: street">
@@ -44,13 +44,24 @@
 
     <img data-bind="attr: {src: mapsURL} "class="bgimg">
 
-    <section>
+    <section class="map-container">
         <div id="map-canvas" class="map"></div>
+        <div class="saved-locations">
+            <label>Search Entries</label><input type="text">
+            <ul class="address-list" data-bind="foreach: addressList">
+                <li class="address-list-item">
+                    <a data-bind="click: update, attr: {href: address}" ><span data-bind="text: address"></span></a>
+                    <button class="delete-entry" data-bind="click: remove">X</button>
+                </li>
+            </ul>
+            <button data-bind="click: addToAddressList, visible: showAddButton">Add Location to List</button>
+            <p class="warning" data-bind="visible: showWarning">Entry already added!</p>
+        </div>
     </section>
 
     <div class="container">
         <section class="nytimes-container">
-            <h3 data-bind="text: nytHeader">{nytHeader}</h3>
+            <h3 data-bind="text: nytHeader"></h3>
             <p data-bind="visible: showDefault">What's going on in your new city? Enter an address and hit submit and the NY Times will tell you here!</p>
             <ul id="nytimes-articles" class="article-list" data-bind="foreach: nytArticleList">
                 <li class="article">
@@ -62,7 +73,7 @@
         </section>
 
         <section class="wikipedia-container">
-            <h3 data-bind="text: wikiHeader">{wikiHeader}</h3>
+            <h3 data-bind="text: wikiHeader"></h3>
             <p data-bind="visible: showDefault">Type in an address above and find relevant Wikipedia articles here!</p>
             <ul id="wikipedia-links"></ul>
     
